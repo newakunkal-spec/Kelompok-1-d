@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tata Surya - Planet Dalam | Kelas 7C</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0f2a 0%, #0a1a3a 100%);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Container utama */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Header */
+        h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #ffd89b, #c7e9fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #bbb;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 15px;
+        }
+
+        /* Navigasi planet */
+        .nav-planet {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .nav-planet a {
+            text-decoration: none;
+            background: #1e2a4a;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            transition: 0.3s;
+            border: 1px solid #3e5a8a;
+        }
+
+        .nav-planet a:hover {
+            background: #ffb347;
+            color: #0a0f2a;
+            transform: scale(1.05);
+            border-color: #ffb347;
+        }
+
+        /* Halaman planet */
+        .planet-page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .planet-page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .planet-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .planet-header h2 {
+            font-size: 2.5rem;
+            background: #ffb347;
+            display: inline-block;
+            padding: 5px 25px;
+            border-radius: 50px;
+            color: #0a0f2a;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .info-card {
+            background: rgba(0,0,0,0.6);
+            border-radius: 25px;
+            padding: 20px;
+            border-left: 5px solid #ffb347;
+        }
+
+        .info-card h3 {
+            color: #ffb347;
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+        }
+
+        .info-card p, .info-card ul {
+            margin-bottom: 12px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        ul li::before {
+            content: "🪐 ";
+            margin-right: 8px;
+        }
+
+        .fakta {
+            background: #0e1a2a;
+            border-radius: 20px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #ffb347;
+        }
+
+        /* Kelompok */
+        .kelompok {
+            margin-top: 50px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 25px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .kelompok h3 {
+            color: #ffb347;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .nama-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .nama-list span {
+            background: #1e2a4a;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .pembuat {
+            margin-top: 10px;
+            font-style: italic;
+            color: #ffb347;
+        }
+
+        /* Barcode section */
+        .barcode-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            color: black;
+        }
+
+        .barcode-section p {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        canvas {
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <!-- Library untuk Barcode -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>🌌 TATA SURYA: PLANET DALAM 🌌</h1>
+    <div class="subtitle">Tugas IPA Kelompok 1 - Kelas 7C | Planet Merkurius, Venus, Bumi, Mars</div>
+
+    <!-- Navigasi 4 Planet -->
+    <div class="nav-planet">
+        <a href="#" onclick="showPlanet('merkurius'); return false;">🔴 Merkurius</a>
+        <a href="#" onclick="showPlanet('venus'); return false;">🟠 Venus</a>
+        <a href="#" onclick="showPlanet('bumi'); return false;">🔵 Bumi</a>
+        <a href="#" onclick="showPlanet('mars'); return false;">🔴 Mars</a>
+    </div>
+
+    <!-- HALAMAN MERKURIUS -->
+    <div id="merkurius" class="planet-page active">
+        <div class="planet-header"><h2>☿ MERKURIUS</h2></div>
+        <div class="content-grid">
+            <div class="info-card"><h3>🌍 Karakteristik Fisik</h3>
+                <p>Merkurius adalah planet terkecil di Tata Surya (diameter ~4.879 km). Permukaannya penuh kawah mirip Bulan. Tidak memiliki atmosfer signifikan, hanya eksosfer tipis yang terdiri dari oksigen, natrium, hidrogen, helium, dan kalium.</p>
+                <p><strong>Suhu ekstrem:</strong> siang hari 430°C, malam hari -180°C.</p>
+            </div>
+            <div class="info-card"><h3>🔄 Orbit & Rotasi</h3>
+                <p>Periode orbit: 88 hari Bumi. Rotasi sangat lambat (59 hari Bumi). Satu hari di Merkurius = 2 tahun Merkurius. Eksentrisitas orbit tertinggi di antara planet dalam.</p>
+                <ul><li>Jarak dari Matahari: 57,9 juta km</li><li>Gravitasi: 38% Bumi</li></ul>
+            </div>
+            <div class="info-card fakta"><h3>✨ Fakta Unik</h3>
+                <ul><li>Tidak memiliki bulan</li><li>Inti besi sangat besar (85% radius planet)</li><li>Nama dari dewa Romawi utusan para dewa</li><li>Permukaan bisa mencapai 430°C tapi es air mungkin ada di kutub yang teduh</li></ul>
+            </div>
+            <div class="info-card"><h3>📡 Penjelajahan</h3>
+                <p>Mariner 10 (1974-75) dan MESSENGER (2011-2015) adalah misi utama. ESA & JAXA meluncurkan BepiColombo (2018) yang akan tiba 2025.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- HALAMAN VENUS -->
+    <div id="venus" class="planet-page">
+        <div class="planet-header"><h2>♀ VENUS</h2></div>
+        <div class="content-grid">
+            <div class="info-card"><h3>🔥 Planet Terpanas</h3>
+                <p>Venus memiliki atmosfer tebal CO₂ (96,5%) dengan awan asam sulfat. Efek rumah kaca tak terkendali membuat suhu rata-rata 467°C, lebih panas dari Merkurius!</p>
+                <p>Diameter ~12.104 km (hampir sama Bumi). Tekanan atmosfer 92 kali Bumi.</p>
+            </div>
+            <div class="info-card"><h3>🔄 Rotasi Mundur</h3>
+                <p>Venus berotasi dari timur ke barat (retrograde). Satu hari Venus = 243 hari Bumi, lebih lama dari tahun Venus (225 hari Bumi). Matahari terbit di barat.</p>
+                <ul><li>Jarak ke Matahari: 108,2 juta km</li><li>Tidak punya bulan</li></ul>
+            </div>
+            <div class="info-card fakta"><h3>🌋 Vulkanisme Aktif</h3>
+                <p>Memiliki lebih dari 1.600 gunung berapi besar. Data terbaru menunjukkan aktivitas vulkanik terjadi dalam beberapa dekade terakhir. Daratan rendah dan dataran lava luas.</p>
+            </div>
+            <div class="info-card"><h3>🛸 Misi</h3>
+                <p>Uni Soviet berhasil mendaratkan Venera (1970-1982). NASA misi Magellan (1990-94) memetakan permukaan radar. ESA Venus Express (2006-2014).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- HALAMAN BUMI -->
+    <div id="bumi" class="planet-page">
+        <div class="planet-header"><h2>🌎 BUMI</h2></div>
+        <div class="content-grid">
+            <div class="info-card"><h3>🏡 Rumah Kita</h3>
+                <p>Satu-satunya planet dengan kehidupan yang diketahui. Air cair di permukaan (71% lautan). Atmosfer kaya nitrogen (78%) & oksigen (21%). Suhu rata-rata 15°C.</p>
+                <p>Diameter 12.742 km, massa 5,97 × 10²⁴ kg.</p>
+            </div>
+            <div class="info-card"><h3>🌙 Bulan & Rotasi</h3>
+                <p>Satu satelit alami besar: Bulan. Rotasi 24 jam, revolusi 365,25 hari. Kemiringan sumbu 23,5° menyebabkan musim.</p>
+                <ul><li>Jarak Matahari: 149,6 juta km</li><li>Medan magnet kuat melindungi dari angin surya</li></ul>
+            </div>
+            <div class="info-card fakta"><h3>📖 Fakta Menakjubkan</h3>
+                <ul><li>Satu-satunya planet yang namanya tidak berasal dari dewa Romawi/Yunani</li><li>Plat tektonik aktif membentuk gunung dan gempa</li><li>Inti luar cair besi-nikel menciptakan magnetosfer</li></ul>
+            </div>
+            <div class="info-card"><h3>🚀 Eksplorasi</h3>
+                <p>Ribuan satelit mengorbit Bumi. Manusia telah menginjak Bulan (1969). Bumi diamati dari luar angkasa untuk ilmu iklim dan bencana.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- HALAMAN MARS -->
+    <div id="mars" class="planet-page">
+        <div class="planet-header"><h2>♂ MARS</h2></div>
+        <div class="content-grid">
+            <div class="info-card"><h3>🔴 Planet Merah</h3>
+                <p>Warna merah karena oksida besi (karat). Diameter 6.779 km, setengah Bumi. Atmosfer tipis CO₂, tekanan hanya 0,6% Bumi. Suhu rata-rata -65°C.</p>
+                <p>Memiliki gunung tertinggi di tata surya: Olympus Mons (22 km).</p>
+            </div>
+            <div class="info-card"><h3>🗿 Bulan & Ciri</h3>
+                <p>Dua bulan kecil: Phobos & Deimos. Lembah Valles Marineris sepanjang 4.000 km. Ada bukti kuat bahwa Mars pernah memiliki air cair di masa lalu.</p>
+                <ul><li>Jarak Matahari: 227,9 juta km</li><li>Rotasi 24,6 jam, revolusi 687 hari</li></ul>
+            </div>
+            <div class="info-card fakta"><h3>🧪 Misi & Kehidupan</h3>
+                <p>Penjelajah NASA: Sojourner, Spirit, Opportunity, Curiosity, Perseverance. Helicopter Ingenuity. Mencari tanda-tanda kehidupan mikroba purba. Misi masa depan manusia direncanakan 2030-an.</p>
+            </div>
+            <div class="info-card"><h3>⛄ Es & Musim</h3>
+                <p>Kutub Mars memiliki es air dan es karbon dioksida. Mars memiliki musim seperti Bumi karena kemiringan sumbu. Debu badai raksasa bisa menutupi seluruh planet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFIL KELOMPOK & PEMBUAT WEB -->
+    <div class="kelompok">
+        <h3>👥 Anggota Kelompok 1 - Kelas 7C</h3>
+        <div class="nama-list">
+            <span>Haikal Rizky Aditya</span> <span>Ardan Rasendra Sutiko</span> <span>Azka Putra Falevi</span>
+            <span>Diva Davit Prananda</span> <span>Zacky Hilmi Falevi</span> <span>Indah Priyanti Dewi Utami</span>
+            <span>Livatul Janah</span> <span>Nafiza Clara Azkayra</span>
+        </div>
+        <div class="pembuat">🌐 Pembuat Website: <strong>Haikal Rizky Aditya</strong></div>
+    </div>
+
+    <!-- BARCODE yang mengarah ke website ini (URL halaman ini) -->
+    <div class="barcode-section">
+        <p>📲 Scan Barcode ini untuk mengakses website Tata Surya (Planet Dalam) langsung dari kertas tugas!</p>
+        <canvas id="barcode"></canvas>
+        <p style="font-size:12px; margin-top:10px;">*Barcode berisi alamat web ini. Simpan file dengan nama "tata_surya.html" dan buka di browser.</p>
+    </div>
+
+    <footer>
+        © Tugas IPA Kelas 7C - Planet Dalam: Merkurius, Venus, Bumi, Mars | Materi kompleks untuk referensi belajar.
+    </footer>
+</div>
+
+<script>
+    // Fungsi mengganti halaman planet
+    function showPlanet(planetId) {
+        // Sembunyikan semua halaman planet
+        const pages = document.querySelectorAll('.planet-page');
+        pages.forEach(page => {
+            page.classList.remove('active');
+        });
+        // Tampilkan yang dipilih
+        const activePage = document.getElementById(planetId);
+        if(activePage) activePage.classList.add('active');
+    }
+
+    // Membuat barcode dari URL halaman ini
+    window.onload = function() {
+        const currentUrl = window.location.href;
+        // Jika file dibuka langsung dari komputer (file://), barcode tetap bisa discan ke alamat file tersebut.
+        // Agar barcode valid di scan, pastikan file di-upload ke hosting atau gunakan localhost. 
+        // Untuk tugas sekolah, siswa bisa scan barcode lalu membuka file tersebut jika file disimpan di lokal (tapi lebih baik upload ke netlify/github pages)
+        // Alternatif: kita buat barcode dengan teks "File: tata_surya.html" tapi tidak akan terbuka otomatis.
+        // Supaya praktis, barcode diisi dengan pesan: "Lihat file tata_surya.html di komputer/HP" 
+        // Tapi karena guru minta barcode menuju materi, saya akan buat barcode menuju URL ini (jika diupload ke hosting).
+        // Untuk demonstrasi, saya isi dengan placeholder: "https://tugasipa7c.github.io/tata-surya" 
+        // Agar lebih berguna, kita gunakan currentUrl jika bukan file://, atau beri instruksi.
+        let barcodeContent = currentUrl;
+        if(barcodeContent.startsWith('file://')) {
+            barcodeContent = "Buka file tata_surya.html di browser - Tugas Planet Dalam";
+        }
+        JsBarcode("#barcode", barcodeContent, {
+            format: "CODE128",
+            lineColor: "#000",
+            width: 2,
+            height: 80,
+            displayValue: true
+        });
+    }
+</script>
+</body>
+                  </html>
